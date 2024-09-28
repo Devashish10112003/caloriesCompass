@@ -1,4 +1,4 @@
-import User from "../model/user.model.js"
+import {User} from "../model/user.model.js"
 import { calculateTDEE, calculateMacros } from "../utils/calculateMacros.js";
 
 // Controller function to handle profile updates and goal calculation

@@ -1,4 +1,4 @@
-import User from "../models/user.model";
+import {User} from "../model/user.model.js";
 import { generateTokenAndSetCookie } from "../utils/generateToken.js";
 import bcryptjs from "bcryptjs"
 
@@ -10,7 +10,7 @@ export async function signup(req,res)
     {
         const {email,password,username}=req.body;
 
-        if(!email||!password||username)
+        if(!email||!password||!username)
         {
             return res.status(400).json({success:false,message:"All field are required"})
         }
@@ -50,7 +50,7 @@ export async function signup(req,res)
 
         const newUser=new User({
             email,
-            password: hashedPassword,
+            passwordHash: hashedPassword,
             username,
         })
 
@@ -91,7 +91,7 @@ export async function login(req,res)
             return res.status(404).json({success:false,message:"Invalid credentials"});   
         }
 
-        const isPasswordCorrect=await bcryptjs.compare(password,user.password);
+        const isPasswordCorrect=await bcryptjs.compare(password,user.passwordHash);
 
         if(!isPasswordCorrect)
         {

@@ -1,4 +1,4 @@
-import Meal from "../model/meal.model"
+import {Meal} from "../model/meal.model.js"
 import axios from "axios";
 
 // Controller to log a meal

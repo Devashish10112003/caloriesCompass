@@ -1,5 +1,5 @@
 // Helper function to calculate TDEE based on user profile
-const calculateTDEE = (height, weight, age, gender, activityLevel) => {
+export const calculateTDEE = (height, weight, age, gender, activityLevel) => {
     let bmr;
     if (gender === 'male') {
         bmr = 10 * weight + 6.25 * height - 5 * age + 5;
@@ -32,7 +32,7 @@ const calculateTDEE = (height, weight, age, gender, activityLevel) => {
 };
 
 // Helper function to calculate macronutrients (protein, fats, carbs) and water intake
-const calculateMacros = (weight, height, age, gender, activityLevel, fitnessGoal) => {
+export const calculateMacros = (weight, height, age, gender, activityLevel, fitnessGoal) => {
     const { tdee, calorieGoal } = calculateTDEE(height, weight, age, gender, activityLevel);
 
     let proteinPerKg;
@@ -75,5 +75,5 @@ const calculateMacros = (weight, height, age, gender, activityLevel, fitnessGoal
     };
 };
 
-export default { calculateTDEE, calculateMacros };
+
 

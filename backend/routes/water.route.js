@@ -1,9 +1,9 @@
-const express = require('express');
-const { logWater } = require('../controllers/water.controller');
-const { protect } = require('../middleware/authMiddleware'); // Ensure user is authenticated
+import express from "express";
+import {logWater} from "../controllers/water.controller.js";
+
 const router = express.Router();
 
 // Route to log water intake (protected by authentication)
-router.post('/log', protect, logWater);
+router.post('/log', logWater);
 
-module.exports = router;
+export default router;

@@ -1,5 +1,5 @@
 import express from "express";
-const { logMeal } = require('../controllers/meal.controller');
+import { logMeal } from "../controllers/meal.controller.js";
 const router = express.Router();
 
 // Route to log a meal (protected by authentication)

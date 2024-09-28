@@ -1,4 +1,4 @@
-import Water from "../model/water.model.js";
+import {WaterLog} from "../model/water.model.js";
 
 // Controller to log water intake
 export async function logWater(req, res) {
@@ -10,7 +10,7 @@ export async function logWater(req, res) {
         }
 
         // Create a new water entry in the database
-        const newWaterLog = new Water({
+        const newWaterLog = new WaterLog({
             userId: req.user._id,
             amount: amount
         });

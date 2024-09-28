@@ -1,5 +1,6 @@
 import express from "express";
 import cron from "node-cron"
+import cookieParser from "cookie-parser";
 
 import authRoutes from "./routes/auth.route.js";
 import mealRoutes from "./routes/meal.route.js"
