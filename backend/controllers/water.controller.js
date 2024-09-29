@@ -29,3 +29,33 @@ export async function logWater(req, res) {
         res.status(500).json({ success: false, message: 'Internal server error' });
     }
 }
+
+// Function to get total water intake for the day
+export const getDailyWaterIntake = async (req, res) => {
+    try {
+        const userId = req.user._id;  // Get the authenticated user's ID
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); // Set to midnight
+
+        // Find all water logs for today by the user
+        const dailyWaterLogs = await WaterLog.find({
+            userId: userId,
+            dateLogged: { $gte: today }
+        });
+
+        // Calculate total water intake
+        const totalWaterIntake = dailyWaterLogs.reduce((total, log) => total + log.amount, 0);
+
+        res.status(200).json({
+            success: true,
+            totalWaterIntake, // Total amount of water drank today
+            dailyWaterLogs // Optional: Return the individual logs if needed
+        });
+
+    } catch (error) {
+        console.error('Error fetching daily water intake:', error.message);
+        res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+};
+

@@ -3,9 +3,10 @@ import cron from "node-cron"
 import cookieParser from "cookie-parser";
 
 import authRoutes from "./routes/auth.route.js";
-import mealRoutes from "./routes/meal.route.js"
-import waterRoutes from "./routes/water.route.js"
-import profileRoutes from "./routes/profile.route.js"
+import mealRoutes from "./routes/meal.route.js";
+import waterRoutes from "./routes/water.route.js";
+import profileRoutes from "./routes/profile.route.js";
+import recommendationRoutes from "./routes/recommendation.route.js";
 
 import { connectDB } from "./config/db.js";
 import { ENV_VARS } from "./config/envVars.js";
@@ -22,6 +23,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/meal',protectRoute, mealRoutes);
 app.use('/api/water',protectRoute,waterRoutes);
 app.use('/api/profile',protectRoute ,profileRoutes);
+app.use('/api/recommend-meal',protectRoute,recommendationRoutes);
 
 
 cron.schedule('0 0 * * *', async () => {

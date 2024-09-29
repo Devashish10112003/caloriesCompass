@@ -1,4 +1,5 @@
 import {User} from "../model/user.model.js";
+import { Profile } from "../model/profile.model.js";
 import { generateTokenAndSetCookie } from "../utils/generateToken.js";
 import bcryptjs from "bcryptjs"
 
@@ -8,7 +9,8 @@ export async function signup(req,res)
 {
     try
     {
-        const {email,password,username}=req.body;
+        
+        const {email,password,username,height, weight, age, gender, activityLevel, fitnessGoal}=req.body;
 
         if(!email||!password||!username)
         {
@@ -46,18 +48,41 @@ export async function signup(req,res)
         const salt=await bcryptjs.genSalt(10);
         const hashedPassword=await bcryptjs.hash(password,salt);
 
-
-
-        const newUser=new User({
+        const newUser = new User({
             email,
             passwordHash: hashedPassword,
             username,
-        })
+        });
+
+        await newUser.save();
+
+        const profile = new Profile({
+            user: newUser._id,  // Link the profile to the newly created user
+            height: height || null,  // Use null if not provided
+            weight: weight || null,  // Use null if not provided
+            age: age || null,        // Use null if not provided
+            gender: gender || null,  // Use null if not provided
+            activityLevel: activityLevel || 'sedentary',  // Default value
+            fitnessGoal: fitnessGoal || null, 
+            calorieGoal: 2000,  // Example values
+            proteinGoal: 150,
+            carbGoal: 250,
+            fatGoal: 70,
+            waterGoal: 3000
+        });
+
+        await profile.save();
+
+
+        newUser.profile=profile._id;
+        await newUser.save();
 
         generateTokenAndSetCookie(newUser._id,res);
-        await newUser.save();
+
+        
+
         res.status(500).json({success:true,
-            user:{
+            User:{
                 ...newUser._doc,
                 password:"",
             },
