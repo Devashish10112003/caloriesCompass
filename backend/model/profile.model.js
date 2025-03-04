@@ -39,30 +39,22 @@ const profileSchema = new mongoose.Schema({
         required: false // Make optional
     },
     // Daily goals (calculated based on profile and user goal)
-    calorieGoal: {
-        type: Number,
-        required: true
+    goals: {
+        calorieGoal: { type: Number, required: true },
+        proteinGoal: { type: Number, required: true },
+        carbGoal: { type: Number, required: true },
+        fatGoal: { type: Number, required: true },
+        waterGoal: { type: Number, default: 4000 },  // Default: 4 liters
+        tdee: { type: Number, default: 0 }
     },
-    proteinGoal: {
-        type: Number,
-        required: true
-    },
-    carbGoal: {
-        type: Number,
-        required: true
-    },
-    fatGoal: {
-        type: Number,
-        required: true
-    },
-    waterGoal: {
-        type: Number,
-        default: 3000  // Default: 3 liters
-    },
-    tdee: { 
-        type: Number, 
-        default: 0 
-    },
+
+    dailyProgress: {
+        totalCalories: { type: Number, default: 0 },
+        totalProtein: { type: Number, default: 0 },
+        totalCarbs: { type: Number, default: 0 },
+        totalFats: { type: Number, default: 0 },
+        lastUpdated: { type: Date, default: new Date() }
+    }
 });
 
 export const Profile = mongoose.model('Profile', profileSchema);

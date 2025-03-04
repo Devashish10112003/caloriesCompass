@@ -13,8 +13,6 @@ export async function updateUserProfile(req, res)
             return res.status(400).json({ success: false, message: 'All fields are required' });
         }
 
-        console.log("req.user:", req.user);
-
         // Find the user from the authenticated request
         const user = await User.findById(req.user._id).populate('profile');
 
@@ -39,12 +37,12 @@ export async function updateUserProfile(req, res)
         const { proteinGoal, fatGoal, carbGoal, waterGoal } = calculateMacros(weight, height, age, gender, activityLevel, fitnessGoal);
 
         // Update user's caloric and macronutrient goals
-        profile.tdee = tdee;
-        profile.calorieGoal = calorieGoal;
-        profile.proteinGoal = proteinGoal;
-        profile.fatGoal = fatGoal;
-        profile.carbGoal = carbGoal;
-        profile.waterGoal = waterGoal;
+        profile.goals.tdee = tdee;
+        profile.goals.calorieGoal = calorieGoal;
+        profile.goals.proteinGoal = proteinGoal;
+        profile.goals.fatGoal = fatGoal;
+        profile.goals.carbGoal = carbGoal;
+        profile.goals.waterGoal = waterGoal;
 
         // Save the updated user profile to the database
         await profile.save();

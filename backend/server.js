@@ -7,10 +7,12 @@ import mealRoutes from "./routes/meal.route.js";
 import waterRoutes from "./routes/water.route.js";
 import profileRoutes from "./routes/profile.route.js";
 import recommendationRoutes from "./routes/recommendation.route.js";
+import progressRoutes from "./routes/progress.route.js";
 
 import { connectDB } from "./config/db.js";
 import { ENV_VARS } from "./config/envVars.js";
 import {protectRoute} from "./middleware/protectRoute.js";
+import {resetDailyProgress} from "./jobs/resetDailyProgress.js";
 
 
 const app=express();
@@ -22,25 +24,12 @@ app.use(cookieParser());
 app.use('/api/auth', authRoutes);
 app.use('/api/meal',protectRoute, mealRoutes);
 app.use('/api/water',protectRoute,waterRoutes);
+app.use('/api/progress',protectRoute,progressRoutes);
 app.use('/api/profile',protectRoute ,profileRoutes);
 app.use('/api/recommend-meal',protectRoute,recommendationRoutes);
 
 
-cron.schedule('0 0 * * *', async () => {
-    try {
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);  // Midnight of today
-
-        // Delete meals from the previous day
-        await Meal.deleteMany({
-            dateLogged: { $lt: today }  // Delete all meals before today
-        });
-
-        console.log('Meals from the previous day have been deleted.');
-    } catch (error) {
-        console.error('Error in cron job for deleting meals:', error.message);
-    }
-});
+cron.schedule('0 0 * * *', resetDailyProgress);
 
 
 
@@ -48,3 +37,5 @@ app.listen(PORT,()=>{
     console.log("server started running at https://localhost:"+PORT);
     connectDB();
 });
+
+//maybe add track record so that user can see the last 7 days macros. but first make this functionalKO

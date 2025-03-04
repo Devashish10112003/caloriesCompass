@@ -1,10 +1,11 @@
-import {Meal} from "../model/meal.model.js"
+import {Meal} from "../model/meal.model.js";
+import {Profile} from "../model/profile.model.js";
 import axios from "axios";
 
 // Controller to log a meal
 export async function logMeal(req, res) {
     try {
-        const { mealName, portionSize } = req.body;
+        const { mealName, portionSize} = req.body;
 
         if (!mealName || !portionSize) {
             return res.status(400).json({ success: false, message: 'Please provide meal name and portion size.' });
@@ -38,40 +39,51 @@ export async function logMeal(req, res) {
         // Save the meal to the database
         await newMeal.save();
 
+
+        await Profile.findOneAndUpdate(
+            { user:req.user._id },
+            {
+                $inc: {
+                    "dailyProgress.totalCalories": nf_calories,
+                    "dailyProgress.totalProtein": nf_protein,
+                    "dailyProgress.totalCarbs": nf_total_carbohydrate,
+                    "dailyProgress.totalFats": nf_total_fat
+                },
+                "dailyProgress.lastUpdated": new Date()
+            }
+        );
+
+        
         res.status(201).json({
             success: true,
             message: 'Meal logged successfully!',
             meal: newMeal
         });
-
+        
     } catch (error) {
         console.error('Error logging meal:', error.message);
         res.status(500).json({ success: false, message: 'Internal server error' });
     }
 }
 
-const getDailyProgress = async (userId) => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0); // Set to midnight
+export async function getMeals(req,res){
+    try{
+        const meals=await Meal.find(
+            { user:req.user._id },
+        )
 
-    // Find all meals logged today by the user
-    const dailyMeals = await Meal.find({
-        userId: userId,
-        dateLogged: { $gte: today }
-    });
+        res.status(200).json({
+            success: true,
+            message: 'Got meals successfully',
+            meals:meals
+        });
+    }
+    catch(error){
+        console.log('Error getting all the meals: ',error.message);
+        res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+    
 
-    let totalProtein = 0, totalCarbs = 0, totalFats = 0, totalCalories = 0;
-    dailyMeals.forEach(meal => {
-        totalProtein += meal.protein;
-        totalCarbs += meal.carbs;
-        totalFats += meal.fats;
-        totalCalories += meal.calories;
-    });
+}
 
-    return {
-        totalCalories,
-        totalProtein,
-        totalCarbs,
-        totalFats,
-    };
-};
+//add a route to get the logged meals

@@ -13,8 +13,9 @@ export async function recommendMeal(req, res) {
         }
 
         // Extract the relevant goal data from the user's profile
-        const { calorieGoal, proteinGoal, fatGoal, carbGoal, diet } = user.profile;
-
+        const { calorieGoal, proteinGoal, fatGoal, carbGoal } = user.profile.goals;
+        const{diet}=user.profile;
+        
         if (!calorieGoal || !proteinGoal || !fatGoal || !carbGoal || !diet) {
             return res.status(400).json({ success: false, message: 'User nutritional data missing in profile.' });
         }

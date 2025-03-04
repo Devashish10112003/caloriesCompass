@@ -1,7 +1,7 @@
 import {User} from "../model/user.model.js";
 import { Profile } from "../model/profile.model.js";
 import { generateTokenAndSetCookie } from "../utils/generateToken.js";
-import bcryptjs from "bcryptjs"
+import bcryptjs from "bcryptjs";
 
 
 // Generate JWT token
@@ -10,11 +10,11 @@ export async function signup(req,res)
     try
     {
         
-        const {email,password,username,height, weight, age, gender, activityLevel, fitnessGoal}=req.body;
+        const {email,password,username}=req.body;
 
         if(!email||!password||!username)
         {
-            return res.status(400).json({success:false,message:"All field are required"})
+            return res.status(400).json({success:false,message:"All field are required"});
         }
 
         const emailRegex=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -58,17 +58,17 @@ export async function signup(req,res)
 
         const profile = new Profile({
             user: newUser._id,  // Link the profile to the newly created user
-            height: height || null,  // Use null if not provided
-            weight: weight || null,  // Use null if not provided
-            age: age || null,        // Use null if not provided
-            gender: gender || null,  // Use null if not provided
-            activityLevel: activityLevel || 'sedentary',  // Default value
-            fitnessGoal: fitnessGoal || null, 
-            calorieGoal: 2000,  // Example values
+            height: null,  // Use null if not provided
+            weight: null,  // Use null if not provided
+            age: null,        // Use null if not provided
+            gender: null,  // Use null if not provided
+            activityLevel: 'sedentary',  // Default value
+            fitnessGoal: null, 
+            goals: {calorieGoal: 2000,  // Example values
             proteinGoal: 150,
             carbGoal: 250,
             fatGoal: 70,
-            waterGoal: 3000
+            waterGoal: 3000}
         });
 
         await profile.save();
@@ -78,8 +78,6 @@ export async function signup(req,res)
         await newUser.save();
 
         generateTokenAndSetCookie(newUser._id,res);
-
-        
 
         res.status(500).json({success:true,
             User:{
@@ -142,7 +140,7 @@ export async function login(req,res)
 
 export async function logout(req,res){
     try{
-        res.clearCookie("jwt-trading");
+        res.clearCookie("jwt-calorie-compass");
         res.status(200).json({success:true,message:"Logged out succesfully"});
     }
     catch(error){
@@ -150,3 +148,5 @@ export async function logout(req,res){
         res.status(500).json({success:false,message:"Internal server error"});
     }
 }
+
+//move the profile building to a seperate route.

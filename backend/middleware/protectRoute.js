@@ -5,7 +5,7 @@ import { ENV_VARS } from "../config/envVars.js";
 export async function protectRoute(req,res,next)
 {
     try{
-        const token=req.cookies["jwt-trading"];
+        const token=req.cookies["jwt-calorie-compass"];
 
         if(!token)
         {
