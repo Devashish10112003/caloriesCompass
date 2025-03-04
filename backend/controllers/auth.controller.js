@@ -149,4 +149,3 @@ export async function logout(req,res){
     }
 }
 
-//move the profile building to a seperate route.

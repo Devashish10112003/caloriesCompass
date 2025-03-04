@@ -1,18 +1,14 @@
 import axios from 'axios';
-import { User } from '../model/user.model.js'; // Adjust the path if your model is in a different location
+import { User } from '../model/user.model.js'; 
 import { Profile } from '../model/profile.model.js';
 
-// Function to recommend meals based on user's profile
 export async function recommendMeal(req, res) {
     try {
-        // Fetch the user from the database to get the profile data
-        const user = await User.findById(req.user._id).populate('profile');  // Assuming profile is populated in User
-
+        const user = await User.findById(req.user._id).populate('profile'); 
         if (!user || !user.profile) {
             return res.status(404).json({ success: false, message: 'User profile not found' });
         }
 
-        // Extract the relevant goal data from the user's profile
         const { calorieGoal, proteinGoal, fatGoal, carbGoal } = user.profile.goals;
         const{diet}=user.profile;
         
@@ -20,13 +16,11 @@ export async function recommendMeal(req, res) {
             return res.status(400).json({ success: false, message: 'User nutritional data missing in profile.' });
         }
 
-        // Determine the time of day to recommend a meal
         const currentTime = new Date();
         const currentHour = currentTime.getHours();
         let mealType;
         let caloriePercentage;
 
-        // Meal time logic (decides meal type and percentage of daily calories for that meal)
         if (currentHour >= 5 && currentHour <= 10) {
             mealType = 'breakfast';
             caloriePercentage = 0.25; // 25-30% of daily calories for breakfast
@@ -43,13 +37,11 @@ export async function recommendMeal(req, res) {
             return res.status(400).json({ success: false, message: 'No meal suggestions at this time.' });
         }
 
-        // Calculate the recommended calories and macronutrients for this meal
         const mealCalories = calorieGoal * caloriePercentage;
         const mealProtein = proteinGoal * caloriePercentage;
         const mealFat = fatGoal * caloriePercentage;
         const mealCarbs = carbGoal * caloriePercentage;
 
-        // Map user diet to Spoonacular diet parameters
         let spoonacularDiet;
         switch (diet) {
             case 'veg':
@@ -68,13 +60,12 @@ export async function recommendMeal(req, res) {
                 return res.status(400).json({ success: false, message: 'Invalid diet type' });
         }
 
-        // Fetch meal recommendation from Spoonacular API for 5 meals
         const response = await axios.get('https://api.spoonacular.com/recipes/complexSearch', {
             params: {
                 apiKey: process.env.SPOONACULAR_API_KEY,
                 diet: spoonacularDiet,
                 type: mealType,          // breakfast, lunch, snack, or dinner
-                minCalories: mealCalories * 0.9, // Allow some flexibility, 90% to 110% of calculated calories
+                minCalories: mealCalories * 0.9, 
                 maxCalories: mealCalories * 1.1,
                 number: 5,  // Return 5 recommended meals
                 minProtein: mealProtein * 0.9,
@@ -90,11 +81,10 @@ export async function recommendMeal(req, res) {
             return res.status(404).json({ success: false, message: 'No meal found for your preferences.' });
         }
 
-        // Send the 5 recommended meals
         res.status(200).json({
             success: true,
             message: `Recommended ${mealType} for you!`,
-            meals: meals  // Return an array of the 5 recommended meals
+            meals: meals  
         });
 
     } catch (error) {

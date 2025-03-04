@@ -85,5 +85,3 @@ export async function getMeals(req,res){
     
 
 }
-
-//add a route to get the logged meals
