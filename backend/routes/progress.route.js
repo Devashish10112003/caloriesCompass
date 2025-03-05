@@ -1,8 +1,8 @@
 import express from "express";
-import {getDailyProgress} from "../controllers/profile.controller.js";
+import {getDailyProgress} from "../controllers/progress.controller.js";
 
 const router=express.Router();
 
-router.get("/get-daily-progress",getDailyProgress);
+router.get("/getDailyProgress",getDailyProgress);
 
 export default router;

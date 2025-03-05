@@ -1,7 +1,7 @@
 import { Profile } from "../model/profile.model.js";
 import { Meal } from "../model/meal.model.js";
 
-async function resetDailyProgress(){
+export async function resetDailyProgress(){
     
     try {
         await Profile.updateMany({}, {
@@ -33,6 +33,3 @@ async function resetDailyProgress(){
         console.error('Error in cron job for deleting meals:', error.message);
     }
 }
-
-
-export default resetDailyProgress;

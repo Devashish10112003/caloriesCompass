@@ -53,6 +53,7 @@ const profileSchema = new mongoose.Schema({
         totalProtein: { type: Number, default: 0 },
         totalCarbs: { type: Number, default: 0 },
         totalFats: { type: Number, default: 0 },
+        totalWater: { type: Number, default: 0 },
         lastUpdated: { type: Date, default: new Date() }
     }
 });

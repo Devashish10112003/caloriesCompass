@@ -1,4 +1,6 @@
 import {WaterLog} from "../model/water.model.js";
+import {Profile} from "../model/profile.model.js";
+
 
 export async function logWater(req, res) {
     try {
@@ -14,6 +16,16 @@ export async function logWater(req, res) {
         });
 
         await newWaterLog.save();
+
+        await Profile.findOneAndUpdate(
+            { user:req.user._id },
+            {
+                $inc: {
+                    "dailyProgress.totalWater":amount
+                },
+                "dailyProgress.lastUpdated": new Date()
+            }
+        );
 
         res.status(201).json({
             success: true,
@@ -39,15 +51,14 @@ export async function getDailyWaterIntake(req, res){
             dateLogged: { $gte: today }
         });
 
-        const totalWaterIntake = dailyWaterLogs.reduce((total, log) => total + log.amount, 0);
-
+        
         res.status(200).json({
             success: true,
-            totalWaterIntake, 
-            dailyWaterLogs 
+            dailyWaterLogs :dailyWaterLogs
         });
 
-    } catch (error) {
+    } 
+    catch (error) {
         console.error('Error fetching daily water intake:', error.message);
         res.status(500).json({ success: false, message: 'Internal server error' });
     }

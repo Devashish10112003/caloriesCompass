@@ -68,10 +68,15 @@ export async function logMeal(req, res) {
 
 export async function getMeals(req,res){
     try{
-        const meals=await Meal.find(
-            { user:req.user._id },
-        )
 
+        const today = new Date();
+        today.setUTCHours(0, 0, 0, 0);
+
+        const meals=await Meal.find({ 
+            userId:req.user._id ,
+            dateLogged:  {$gte: today} 
+        });
+        
         res.status(200).json({
             success: true,
             message: 'Got meals successfully',
@@ -82,6 +87,4 @@ export async function getMeals(req,res){
         console.log('Error getting all the meals: ',error.message);
         res.status(500).json({ success: false, message: 'Internal server error' });
     }
-    
-
 }

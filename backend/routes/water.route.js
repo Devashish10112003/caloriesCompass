@@ -6,6 +6,6 @@ const router = express.Router();
 // Route to log water intake (protected by authentication)
 router.post('/log', logWater);
 
-router.get('/daily-water-intake', getDailyWaterIntake);
+router.get('/getDailyWaterIntake', getDailyWaterIntake);
 
 export default router;

@@ -6,7 +6,7 @@ export async function getDailyProgress(req, res) {
             return res.status(401).json({ success: false, message: "Unauthorized" });
         }
 
-        const profile = await Profile.findOne({ user: req.user._id }, "dailyProgress");
+        const profile = await Profile.findOne({ user: req.user._id }, "dailyProgress goals");
 
         if (!profile) {
             return res.status(404).json({ success: false, message: "User profile not found" });
@@ -19,3 +19,5 @@ export async function getDailyProgress(req, res) {
         res.status(500).json({ success: false, message: "Internal server error" });
     }
 }
+
+//maybe also send the goal calories too
