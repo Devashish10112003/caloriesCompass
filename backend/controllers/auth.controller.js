@@ -57,14 +57,14 @@ export async function signup(req,res)
         await newUser.save();
 
         const profile = new Profile({
-            user: newUser._id,  // Link the profile to the newly created user
-            height: null,  // Use null if not provided
-            weight: null,  // Use null if not provided
-            age: null,        // Use null if not provided
-            gender: null,  // Use null if not provided
-            activityLevel: 'sedentary',  // Default value
+            user: newUser._id,  
+            height: null,  
+            weight: null, 
+            age: null,        
+            gender: null,  
+            activityLevel: 'Sedentary',  
             fitnessGoal: null, 
-            goals: {calorieGoal: 2000,  // Example values
+            goals: {calorieGoal: 2000, 
             proteinGoal: 150,
             carbGoal: 250,
             fatGoal: 70,
@@ -79,7 +79,7 @@ export async function signup(req,res)
 
         generateTokenAndSetCookie(newUser._id,res);
 
-        res.status(500).json({success:true,
+        res.status(201).json({success:true,
             User:{
                 ...newUser._doc,
                 password:"",

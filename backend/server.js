@@ -1,6 +1,9 @@
 import express from "express";
 import cron from "node-cron"
 import cookieParser from "cookie-parser";
+import cors from "cors";
+import path from "path";
+import { fileURLToPath } from 'url';
 
 import authRoutes from "./routes/auth.route.js";
 import mealRoutes from "./routes/meal.route.js";
@@ -14,9 +17,17 @@ import { ENV_VARS } from "./config/envVars.js";
 import {protectRoute} from "./middleware/protectRoute.js";
 import {resetDailyProgress} from "./jobs/resetDailyProgress.js";
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app=express();
 const PORT = ENV_VARS.PORT;
+app.use(cors( {
+    origin: 'http://localhost:5173', 
+    credentials: true,
+}));
+
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use(express.json());
 app.use(cookieParser());
@@ -38,4 +49,3 @@ app.listen(PORT,()=>{
     connectDB();
 });
 
-//maybe add track record so that user can see the last 7 days macros. but first make this functionalKO

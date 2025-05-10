@@ -2,7 +2,36 @@ import {User} from "../model/user.model.js";
 import { Profile } from "../model/profile.model.js";
 import { calculateTDEE, calculateMacros } from "../utils/calculateMacros.js";
 
-// Controller function to handle profile updates and goal calculation
+export async function getUserProfile(req, res) {
+    try {
+        const user = await User.findById(req.user._id).populate('profile');
+
+        if (!user || !user.profile) {
+            return res.status(404).json({ 
+                success: false, 
+                message: 'User profile not found' 
+            });
+        }
+
+        const userData = {
+            ...user._doc,
+            password: undefined,
+            profile: user.profile
+        };
+
+        res.status(200).json({
+            success: true,
+            user: userData
+        });
+    } catch (error) {
+        console.error('Error fetching user profile:', error.message);
+        res.status(500).json({ 
+            success: false, 
+            message: 'Internal server error' 
+        });
+    }
+}
+
 export async function updateUserProfile(req, res) 
 {
     try {
@@ -44,6 +73,7 @@ export async function updateUserProfile(req, res)
             success: true,
             user: {
                 ...user._doc,
+                profile:profile,
                 password: '',
             }
         });

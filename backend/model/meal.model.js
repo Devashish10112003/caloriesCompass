@@ -26,9 +26,13 @@ const mealSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
+    image: {
+        type: String,
+        required: false
+    },
     dateLogged: {
         type: Date,
-        default: Date.now  // Automatically logs the current date/time
+        default: Date.now 
     }
 });
 

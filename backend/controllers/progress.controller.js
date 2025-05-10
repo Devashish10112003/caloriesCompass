@@ -20,4 +20,3 @@ export async function getDailyProgress(req, res) {
     }
 }
 
-//maybe also send the goal calories too

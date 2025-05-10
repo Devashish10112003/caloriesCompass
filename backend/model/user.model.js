@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema({
     // Profile details
     profile: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Profile' // Reference to the Profile model
+        ref: 'Profile' 
     },
     createdAt: {
         type: Date,

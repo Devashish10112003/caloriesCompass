@@ -3,48 +3,48 @@ import mongoose from "mongoose";
 const profileSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User', // Reference to the User model
+        ref: 'User', 
         required: true
     },
     height: {
-        type: Number,  // in cm
-        required: false // Make optional
+        type: Number,  
+        required: false 
     },
     weight: {
-        type: Number,  // in kg
-        required: false // Make optional
+        type: Number,  
+        required: false 
     },
     age: {
         type: Number,
-        required: false // Make optional
+        required: false 
     },
     gender: {
         type: String,
         enum: ['male', 'female'],
-        required: false // Make optional
+        required: false 
     },
     activityLevel: { 
         type: String, 
-        enum: ['sedentary', 'lightly_active', 'moderately_active', 'very_active'], 
-        default: 'sedentary' // This can be default
+        enum: ['Sedentary', 'Lightly Active', 'Moderately Active', 'Very Active'], 
+        default: 'Sedentary'
     },
     fitnessGoal: {
         type: String,
-        enum: ['weight_loss', 'weight_gain', 'muscle_building', 'maintenance'],
-        required: false // Make optional
+        enum: ['Weight Loss', 'Weight Gain', 'Muscle Building', 'Maintenance'], 
+        required: false
     },
     diet: {
         type: String,
-        enum: ['veg', 'vegan', 'nonveg', 'gluten free'], // Enum for allowed diet types
-        required: false // Make optional
+        enum: ['Veg', 'Vegan', 'Non-Vegetarian', 'Gluten Free'], 
+        required: false
     },
-    // Daily goals (calculated based on profile and user goal)
+    
     goals: {
         calorieGoal: { type: Number, required: true },
         proteinGoal: { type: Number, required: true },
         carbGoal: { type: Number, required: true },
         fatGoal: { type: Number, required: true },
-        waterGoal: { type: Number, default: 4000 },  // Default: 4 liters
+        waterGoal: { type: Number, default: 4000 }, 
         tdee: { type: Number, default: 0 }
     },
 

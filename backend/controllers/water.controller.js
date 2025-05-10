@@ -4,7 +4,7 @@ import {Profile} from "../model/profile.model.js";
 
 export async function logWater(req, res) {
     try {
-        const { amount } = req.body;  
+        const { amount } = req.body;
 
         if (!amount) {
             return res.status(400).json({ success: false, message: 'Please provide the amount of water.' });
@@ -17,20 +17,22 @@ export async function logWater(req, res) {
 
         await newWaterLog.save();
 
-        await Profile.findOneAndUpdate(
-            { user:req.user._id },
+        const updatedProfile = await Profile.findOneAndUpdate(
+            { user: req.user._id },
             {
                 $inc: {
-                    "dailyProgress.totalWater":amount
+                    "dailyProgress.totalWater": amount
                 },
                 "dailyProgress.lastUpdated": new Date()
-            }
+            },
+            { new: true } 
         );
 
         res.status(201).json({
             success: true,
             message: 'Water intake logged successfully!',
-            waterLog: newWaterLog
+            waterLog: newWaterLog,
+            totalWaterIntake: updatedProfile.dailyProgress.totalWater 
         });
 
     } catch (error) {
@@ -38,6 +40,7 @@ export async function logWater(req, res) {
         res.status(500).json({ success: false, message: 'Internal server error' });
     }
 }
+
 
 export async function getDailyWaterIntake(req, res){
     try {
@@ -63,4 +66,6 @@ export async function getDailyWaterIntake(req, res){
         res.status(500).json({ success: false, message: 'Internal server error' });
     }
 };
+
+
 
