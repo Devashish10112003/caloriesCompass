@@ -7,6 +7,8 @@ import signupImage from '../assets/SignupPageImage.jpg';
 import logo from '../assets/logo.png';
 import axios from '../utils/axios';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -15,7 +17,6 @@ const SignUp = () => {
     password: '',
     confirmPassword: '',
   });
-  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -24,15 +25,13 @@ const SignUp = () => {
       ...prev,
       [name]: value
     }));
-    setError('');
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
   
     if (formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match');
+      toast.error('Passwords do not match');
       return;
     }
 
@@ -47,7 +46,7 @@ const SignUp = () => {
         navigate('/dashboard');
       }
     } catch (error) {
-      setError(error.response?.data?.message || 'An error occurred during signup');
+      toast.error(error.response?.data?.message || 'An error occurred during signup');
     }
   };
 
@@ -62,11 +61,6 @@ const SignUp = () => {
             <div className="text-left pl-6">
               <h2 className="text-3xl font-bold text-gray-900 mb-8">Sign up</h2>
             </div>
-            {error && (
-              <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
-                {error}
-              </div>
-            )}
             <form className="space-y-6 p-6" onSubmit={handleSubmit}>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">

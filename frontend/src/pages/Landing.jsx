@@ -17,23 +17,14 @@ const Landing = () => {
       </div>
 
       <div className="relative z-10 min-h-screen flex flex-col">
-        <div className="absolute top-8 left-8">
+        <div className="absolute pt-4 pl-2 md:pt-6 ">
           <img src={logo} alt="Logo" className="h-12" />
         </div>
         
         <div className="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl w-full text-center">
             <h1 className="text-4xl font-bold text-white mb-6 min-h-[48px]">
-              <TypeAnimation
-                sequence={[
-                  'Welcome to Calories Compass',
-                  2000,
-                ]}
-                wrapper="span"
-                speed={30}
-                style={{ display: 'inline-block' }}
-                repeat={0}
-              />
+              Welcome to Calories Compass
             </h1>
             <p className="text-xl text-gray-200 mb-8 min-h-[28px]">
               <TypeAnimation
@@ -50,7 +41,7 @@ const Landing = () => {
             <div className="flex justify-center space-x-4">
               <Link
                 to="/login"
-                className="px-6 py-3 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                className="px-8 py-3 border-green-600 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
               >
                 Login
               </Link>

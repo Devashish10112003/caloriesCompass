@@ -96,7 +96,7 @@ const Drawer = () => {
   }
 
   return (
-    <div className={`${isDrawerOpen ? 'w-64' : 'w-20'} bg-white shadow-lg transition-all duration-300 h-screen`}>
+    <div className={`${isDrawerOpen ? 'w-64' : 'w-20'} bg-white  transition-all duration-300 h-screen`}>
       <div className="flex flex-col h-full">
         <div className="p-4">
           <button

@@ -118,18 +118,19 @@ const Water = () => {
     <div className="flex items-top justify-center p-4 h-full">
       <div className="max-w-4xl w-full">
         <div className="flex justify-between items-center mb-6 ">
-          <h1 className="text-2xl font-bold text-gray-900">Water Intake Tracker</h1>
+          <h1 className="text-xl font-bold text-gray-900 md:text-2xl">Water Intake</h1>
           <button
             onClick={() => setIsModalOpen(true)}
-            className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            className="flex items-center space-x-2 bg-blue-600 text-white px-3 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
           >
-            <BeakerIcon className="h-5 w-5" />
+            <BeakerIcon className="h-4 w-4 md:h-5 w-5" />
             <span>Add Water</span>
           </button>
         </div>
 
-        <div className="grid grid-cols-2 gap-6 h-[90%]">
-          <div className="flex flex-col items-center justify-center h-full ">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 h-[90%]">
+          {/* Beaker Section */}
+          <div className="flex flex-col items-center justify-center h-full">
             <div className="relative w-32 h-[400px] border-4 border-blue-200 rounded-b-3xl rounded-t-lg overflow-hidden">
               <div
                 className="absolute bottom-0 w-full bg-blue-400 transition-all duration-500"
@@ -148,17 +149,20 @@ const Water = () => {
               </div>
             </div>
             <div className="mt-4 text-center">
-              <p className="text-2xl font-bold text-blue-600">
+              <p className="text-xl sm:text-2xl font-bold text-blue-600">
                 {waterIntake}ml / {dailyGoal}ml
               </p>
               <p className="text-sm text-gray-600">
-                {(Math.round(((waterIntake / dailyGoal) * 100)>100) ? 100: (waterIntake / dailyGoal) * 100).toFixed(2) }% of daily goal
+                {(
+                  Math.round((waterIntake / dailyGoal) * 100 > 100 ? 100 : (waterIntake / dailyGoal) * 100)
+                ).toFixed(2)}% of daily goal
               </p>
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow p-6">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">Today's Water Log</h2>
+          {/* Log Section */}
+          <div className="bg-white rounded-lg shadow p-4 md:p-6">
+            <h2 className="text-xl font-semibold text-gray-900 mb-4 md:text-lg">Today's Water Log</h2>
             {waterLogs.length === 0 ? (
               <p className="text-gray-500 text-center py-4">No water logged today</p>
             ) : (
@@ -170,9 +174,9 @@ const Water = () => {
                   >
                     <div className="flex items-center space-x-2">
                       <BeakerIcon className="h-5 w-5 text-blue-500" />
-                      <span className="text-gray-700">{log.amount}ml</span>
+                      <span className="text-gray-700 text-sm sm:text-base">{log.amount}ml</span>
                     </div>
-                    <span className="text-sm text-gray-500">
+                    <span className="text-xs sm:text-sm text-gray-500">
                       {new Date(log.dateLogged).toLocaleTimeString()}
                     </span>
                   </div>

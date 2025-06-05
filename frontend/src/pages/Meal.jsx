@@ -97,73 +97,76 @@ const Meal = () => {
   }
 
   return (
-    <div className="flex items-center justify-center p-4 h-full">
+    <div className="flex items-center justify-center px-4 h-full">
       <div className="max-w-4xl w-full">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold text-gray-900">Today's Meals</h1>
+          <h1 className="text-xl font-bold text-gray-900 md:text-2xl">Today's Meals</h1>
           <button
             onClick={() => setIsModalOpen(true)}
-            className="flex items-center space-x-2 bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+            className="flex items-center space-x-2 bg-green-600 text-white px-3 py-2 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
           >
-            <PlusIcon className="h-5 w-5" />
+            <PlusIcon className="h-4 w-4 md:h-5 w-5" />
             <span>Add Meal</span>
           </button>
         </div>
 
-        <div className="grid grid-cols-1 gap-6 h-[calc(100vh-12rem)] overflow-y-auto">
+        <div className="flex flex-col gap-y-4 h-[calc(100vh-12rem)] overflow-y-auto">
           {meals.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-16 text-gray-400">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 17v-2a4 4 0 018 0v2m-4-4V7m0 0V5a2 2 0 10-4 0v2m4 0a2 2 0 104 0V5a2 2 0 10-4 0v2z" />
-              </svg>
-              <span className="text-lg">No meals found for today.</span>
-            </div>
+          <div className="flex flex-col items-center justify-center py-16 text-gray-400">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 17v-2a4 4 0 018 0v2m-4-4V7m0 0V5a2 2 0 10-4 0v2m4 0a2 2 0 104 0V5a2 2 0 10-4 0v2z" />
+            </svg>
+            <span className="text-lg">No meals found for today.</span>
+          </div>
           ) : (
             meals.map(meal => (
-              <div key={meal._id} className="bg-white rounded-lg shadow p-6">
-                <div className="flex space-x-6">
-                  <div className="w-32 h-32 rounded-lg overflow-hidden">
-                    <img
-                      src={meal.image ? `http://localhost:5000/${meal.image}` : 'https://via.placeholder.com/150'}
-                      alt={meal.mealName}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <h2 className="text-xl font-semibold text-gray-900">{meal.mealName}</h2>
-                        <p className="text-sm text-gray-500 mt-1">{meal.dateLogged ? new Date(meal.dateLogged).toLocaleTimeString() : ''}</p>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <span className="text-lg font-semibold text-green-600">{meal.calories} kcal</span>
-                        <button 
-                          onClick={() => handleDeleteMeal(meal._id)}
-                          className="p-1 text-gray-400 hover:text-red-500 transition-colors"
-                          aria-label="Delete meal"
-                        >
-                          <TrashIcon className="h-5 w-5" />
-                        </button>
-                      </div>
+              <div key={meal._id} className="bg-white rounded-lg shadow p-4 sm:p-6 sm:h-48 h-auto">
+              <div className="flex flex-col sm:flex-row sm:space-x-6 space-y-4 sm:space-y-0">
+                <div className="w-full sm:w-32 h-32 mx-auto sm:mx-0 rounded-lg overflow-hidden">
+                  <img
+                    src={meal.image ? `http://localhost:5000/${meal.image}` : 'https://via.placeholder.com/150'}
+                    alt={meal.mealName}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+
+                <div className="flex-1">
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start space-y-2 sm:space-y-0">
+                    <div>
+                      <h2 className="text-lg sm:text-xl font-semibold text-gray-900">{meal.mealName}</h2>
+                      <p className="text-xs sm:text-sm text-gray-500 mt-1">
+                        {meal.dateLogged ? new Date(meal.dateLogged).toLocaleTimeString() : ''}
+                      </p>
                     </div>
-                    
-                    <div className="mt-4 grid grid-cols-3 gap-4">
-                      <div className="bg-gray-50 p-3 rounded-lg">
-                        <p className="text-sm text-gray-500">Protein</p>
-                        <p className="text-lg font-semibold text-blue-600">{meal.protein}g</p>
-                      </div>
-                      <div className="bg-gray-50 p-3 rounded-lg">
-                        <p className="text-sm text-gray-500">Carbs</p>
-                        <p className="text-lg font-semibold text-green-600">{meal.carbs}g</p>
-                      </div>
-                      <div className="bg-gray-50 p-3 rounded-lg">
-                        <p className="text-sm text-gray-500">Fats</p>
-                        <p className="text-lg font-semibold text-yellow-600">{meal.fats}g</p>
-                      </div>
+                    <div className="flex items-center space-x-2">
+                      <span className="text-base sm:text-lg font-semibold text-green-600">{meal.calories} kcal</span>
+                      <button 
+                        onClick={() => handleDeleteMeal(meal._id)}
+                        className="p-1 text-gray-400 hover:text-red-500 transition-colors"
+                        aria-label="Delete meal"
+                      >
+                        <TrashIcon className="h-5 w-5" />
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="mt-4 grid grid-cols-3 gap-2 sm:gap-4">
+                    <div className="bg-gray-50 p-2 sm:p-3 rounded-lg">
+                      <p className="text-xs sm:text-sm text-gray-500">Protein</p>
+                      <p className="text-sm sm:text-lg font-semibold text-blue-600">{meal.protein}g</p>
+                    </div>
+                    <div className="bg-gray-50 p-2 sm:p-3 rounded-lg">
+                      <p className="text-xs sm:text-sm text-gray-500">Carbs</p>
+                      <p className="text-sm sm:text-lg font-semibold text-green-600">{meal.carbs}g</p>
+                    </div>
+                    <div className="bg-gray-50 p-2 sm:p-3 rounded-lg">
+                      <p className="text-xs sm:text-sm text-gray-500">Fats</p>
+                      <p className="text-sm sm:text-lg font-semibold text-yellow-600">{meal.fats}g</p>
                     </div>
                   </div>
                 </div>
               </div>
+            </div>
             ))
           )}
         </div>
